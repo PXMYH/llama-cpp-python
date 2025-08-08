@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-2022, macos-14, macos-15]
+        os: [ubuntu-22.04]
 
     steps:
       - uses: actions/checkout@v4
@@ -30,16 +30,6 @@ jobs:
           python -m pip install uv
           RUST_LOG=trace python -m uv pip install -e .[all] --verbose
         shell: bash
-
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        env:
-          RUST_LOG: trace        
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install uv
-          python -m uv pip install -e .[all] --verbose
-        shell: cmd
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
@@ -106,17 +96,6 @@ jobs:
           RUST_LOG=trace python -m uv pip install -e .[all] --verbose
           python -m uv pip install build
         shell: bash
-
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        env:
-          RUST_LOG: trace        
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install uv
-          python -m uv pip install -e .[all] --verbose
-          python -m uv pip install build
-        shell: cmd
 
       - name: Build source distribution
         run: |
