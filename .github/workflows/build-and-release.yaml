@@ -117,8 +117,18 @@ jobs:
           merge-multiple: true
           path: dist
 
-      - uses: softprops/action-gh-release@v2
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
+          tag_name: release-${{ github.run_number }}-${{ github.run_attempt }}
+          name: Release ${{ github.run_number }}
+          body: |
+            Automated release created by GitHub Actions.
+            Run Number: ${{ github.run_number }}
+            Run Attempt: ${{ github.run_attempt }}
+            Commit: ${{ github.sha }}
           files: dist/*
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
